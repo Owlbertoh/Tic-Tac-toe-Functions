@@ -35,12 +35,12 @@ void showgame(){
 void pochar(char x){
     l=0;
     col=0;
-    printf("\tDigite as coordenadas: ");
+    printf("\tWrite the bearings: ");
     scanf("%d %d", &l, &col);
     opcao = valid(l, col);
         if(opcao == 0){
         do{
-        printf("\tCoordenadas invalidas! Digite as coordenadas novamente: ");
+        printf("\tinvalid bearings! Write the bearings again: ");
         scanf("%d %d", &l, &col);
         opcao = valid(l, col);            
         }while(opcao == 0);
@@ -61,12 +61,12 @@ int espaco(){
     int cont = 0;
     for(l=0;l<3;l++){
         for(col=0;col<3;col++){
-            if(matrizprincesa[l][col] == ' '){
+            if(matrizprincesa[l][col] != ' '){
                 cont++;
             }
         }
     }
-    if(cont == 0){
+    if(cont == 9){
         return 1;
     }
     else{
@@ -119,7 +119,7 @@ int diagprinc(char x){
         return 0;
     }    
 }
-//Diagona Secundaria
+//Diagonal Secundaria
 int diagsecun(char x){
     if(matrizprincesa[0][2] == x && matrizprincesa[1][1] == x && matrizprincesa[2][0] == x){
         return 1;
@@ -143,7 +143,6 @@ void jogar(){
             if(ganhou == 1){
                 showgame();
                 printf("\n\tPlayer 1 wins !!\n");
-                break;
             }
                 player = 0;
         }
@@ -155,13 +154,16 @@ void jogar(){
             ganhou += diagsecun('0');
             if(ganhou == 1){
                 showgame();
-                printf("\n\tPlayer 2 ganhou !!\n");
-                break;
+                printf("\n\tPlayer 2 wins !!\n");
             }
             player = 1;                
         }
-        cont = espaco();    
-    }while(cont != 0 || ganhou != 1);
+        cont = espaco();  
+    }while(cont == 0 && ganhou == 0);
+    if(cont == 1){
+        showgame();
+        printf("\n\n\tDeu velha!\n");
+    }  
 }
 int main () {
     int pcao = 1 ;
@@ -169,7 +171,7 @@ int main () {
     starting();
     jogar();
     printf("Game is over!!\n");
-    printf("Do you want to play again: press 1!\n");
+    printf("Do you want to play again ? press 1!\n");
     scanf("%d", &pcao);
     }while(pcao == 1);
     return 0;
